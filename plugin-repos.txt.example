@@ -1,0 +1,11 @@
+# Plugin Git Repositories
+# Format: git_repo_url branch_name
+# Lines starting with # are comments
+# Empty lines are ignored
+
+# Default train-k8s-container plugin from MITRE
+https://github.com/mitre/train-k8s-container.git v2.0
+
+# Example: Add more plugins here
+# https://github.com/your-org/train-custom-plugin.git main
+# https://github.com/your-org/inspec-reporter-custom.git v1.0.0

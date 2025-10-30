@@ -1,0 +1,49 @@
+# CINC Auditor Alpine .gitignore
+
+# Docker build artifacts
+*.tar
+*.tar.gz
+
+# Custom certificates (sensitive)
+certs/*.crt
+certs/*.pem
+certs/*.key
+certs/*.cer
+certs/*.der
+
+# Keep directory structure and README
+!certs/.gitkeep
+!certs/README.md
+
+# Plugin gems (may be proprietary)
+plugins/*.gem
+
+# Keep directory structure and README
+!plugins/.gitkeep
+!plugins/README.md
+
+# Custom plugin repository list (may contain internal repos)
+plugin-repos.txt
+!plugin-repos.txt.example
+
+# Test outputs
+test-results/
+*.log
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Internal documentation (not for git)
+session.md
+recovery-prompt.md
+RECOVERY-PROMPT.txt
+
+# Temporary files
+tmp/
+temp/
