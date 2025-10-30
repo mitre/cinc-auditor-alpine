@@ -1,0 +1,8 @@
+# CINC Auditor v6 (Stable)
+# Based on https://gitlab.com/cinc-project/docker-images/-/blob/master/docker-auditor/Gemfile
+
+source "https://rubygems.org"
+
+gem "cinc-auditor-core-bin", "~> 6.8", source: "https://rubygems.cinc.sh"
+gem "cinc-auditor-bin", "~> 6.8", source: "https://rubygems.cinc.sh"
+gem "inspec", "~> 6.8", source: "https://rubygems.cinc.sh"
