@@ -1,0 +1,67 @@
+# Container Structure Tests for CINC Auditor Alpine
+# https://github.com/GoogleContainerTools/container-structure-test
+
+schemaVersion: 2.0.0
+
+# Test commands exist and are executable
+commandTests:
+  - name: "cinc-auditor command exists"
+    command: "which"
+    args: ["cinc-auditor"]
+    expectedOutput: ["/usr/lib/ruby/gems/.*/bin/cinc-auditor"]
+
+  - name: "kubectl command exists"
+    command: "which"
+    args: ["kubectl"]
+    expectedOutput: ["/usr/local/bin/kubectl"]
+
+  - name: "cinc-auditor version"
+    command: "cinc-auditor"
+    args: ["version"]
+    exitCode: 0
+
+  - name: "kubectl version"
+    command: "kubectl"
+    args: ["version", "--client", "--output=yaml"]
+    exitCode: 0
+
+# Test required files exist
+fileExistenceTests:
+  - name: ".kube directory exists"
+    path: "/root/.kube"
+    shouldExist: true
+    isDirectory: true
+
+  - name: ".inspec directory exists"
+    path: "/root/.inspec"
+    shouldExist: true
+    isDirectory: true
+
+  - name: "workspace directory exists"
+    path: "/workspace"
+    shouldExist: true
+    isDirectory: true
+
+  - name: ".git directory in workspace"
+    path: "/workspace/.git"
+    shouldExist: true
+    isDirectory: true
+
+# Test file content
+fileContentTests:
+  - name: "plugins.json exists and has train-k8s-container"
+    path: "/root/.inspec/plugins.json"
+    expectedContents: ["train-k8s-container"]
+
+# Test metadata
+metadataTest:
+  envVars:
+    - key: "TRAIN_K8S_SESSION_MODE"
+      value: "true"
+    - key: "KUBECONFIG"
+      value: "/root/.kube/config"
+  labels:
+    - key: "maintainer"
+      value: "Aaron Lippold <lippold@gmail.com>"
+  workdir: "/workspace"
+  cmd: ["cinc-auditor", "version"]

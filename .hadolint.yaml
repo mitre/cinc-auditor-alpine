@@ -1,0 +1,12 @@
+# Hadolint configuration for CINC Auditor Alpine Dockerfile
+# https://github.com/hadolint/hadolint
+
+ignored:
+  - DL3018  # Pin versions in apk add (we use --no-cache which is sufficient)
+  - DL3059  # Multiple consecutive RUN commands (intentional for readability)
+
+trustedRegistries:
+  - docker.io
+  - ruby
+
+failure-threshold: warning
