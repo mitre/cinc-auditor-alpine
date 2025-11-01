@@ -41,6 +41,20 @@ echo ""
 echo -e "${GREEN}[2/3] Running Container Structure Tests...${NC}"
 if command -v container-structure-test &> /dev/null; then
     cd "${PROJECT_ROOT}"
+
+    # Detect Docker socket location (OrbStack vs standard Docker)
+    if [ -S "$HOME/.orbstack/run/docker.sock" ]; then
+        echo "  Detected OrbStack - using ~/.orbstack/run/docker.sock"
+        export DOCKER_HOST="unix://$HOME/.orbstack/run/docker.sock"
+    elif [ -S "/var/run/docker.sock" ]; then
+        echo "  Detected standard Docker - using /var/run/docker.sock"
+        export DOCKER_HOST="unix:///var/run/docker.sock"
+    else
+        echo -e "${RED}❌ No Docker socket found${NC}"
+        echo "   Checked: ~/.orbstack/run/docker.sock and /var/run/docker.sock"
+        exit 1
+    fi
+
     if container-structure-test test --image "${IMAGE_TAG}" --config container-structure-test.yaml; then
         echo -e "${GREEN}✅ Container structure tests passed${NC}"
     else

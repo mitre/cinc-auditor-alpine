@@ -18,13 +18,13 @@ docker buildx bake v7     # CINC 7.0.52.beta
 ## Test
 
 ```bash
-# Check v6
+# Quick smoke test
 docker run --rm cinc-auditor-alpine:6 cinc-auditor version
 docker run --rm cinc-auditor-alpine:6 cinc-auditor plugin list
 
-# Check v7
-docker run --rm cinc-auditor-alpine:7 cinc-auditor version
-docker run --rm cinc-auditor-alpine:7 cinc-auditor plugin list
+# Run full InSpec test suite (container tests itself!)
+docker run --rm -v $(pwd)/test:/test cinc-auditor-alpine:6 \
+  cinc-auditor exec /test/integration --input-file=/test/integration/inputs-v6.yml
 ```
 
 ## Use with Kubernetes

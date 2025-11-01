@@ -55,14 +55,30 @@ jobs:
           fi
           container-structure-test test --image "${IMAGE_TAG}" --config container-structure-test.yaml
 
-      - name: Run Functional Tests
+      - name: Run InSpec Functional Tests
         run: |
           if [ "${{ matrix.version }}" = "v6" ]; then
             IMAGE_TAG="cinc-auditor-alpine:6"
+            INPUTS_FILE="inputs-v6.yml"
           else
             IMAGE_TAG="cinc-auditor-alpine:7"
+            INPUTS_FILE="inputs-v7.yml"
           fi
-          ./tests/test-functional.sh "${IMAGE_TAG}"
+          docker run --rm \
+            -v $(pwd)/test:/test \
+            "${IMAGE_TAG}" \
+            cinc-auditor exec /test/integration --input-file=/test/integration/${INPUTS_FILE}
+
+      - name: Run Goss Tests (Bonus)
+        run: |
+          if [ "${{ matrix.version }}" = "v6" ]; then
+            IMAGE_TAG="cinc-auditor-alpine:6"
+            VARS_FILE="goss-vars-v6.yaml"
+          else
+            IMAGE_TAG="cinc-auditor-alpine:7"
+            VARS_FILE="goss-vars-v7.yaml"
+          fi
+          ./test/goss/test-with-goss.sh "${IMAGE_TAG}" "${VARS_FILE}"
 
   build-multiarch:
     name: Build Multi-Architecture
