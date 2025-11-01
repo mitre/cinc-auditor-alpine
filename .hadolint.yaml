@@ -2,8 +2,11 @@
 # https://github.com/hadolint/hadolint
 
 ignored:
+  - DL3003  # Use WORKDIR instead of cd (cd needed in RUN blocks for plugin installation)
+  - DL3006  # FROM with dynamic TARGETARCH (intentional for multi-arch support)
   - DL3018  # Pin versions in apk add (we use --no-cache which is sufficient)
   - DL3059  # Multiple consecutive RUN commands (intentional for readability)
+  - SC2012  # Use find instead of ls (ls is simpler for *.gemspec pattern)
 
 trustedRegistries:
   - docker.io

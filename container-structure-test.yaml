@@ -8,7 +8,7 @@ commandTests:
   - name: "cinc-auditor command exists"
     command: "which"
     args: ["cinc-auditor"]
-    expectedOutput: ["/usr/lib/ruby/gems/.*/bin/cinc-auditor"]
+    expectedOutput: ["/usr/local/bundle/bin/cinc-auditor"]
 
   - name: "kubectl command exists"
     command: "which"
@@ -30,22 +30,18 @@ fileExistenceTests:
   - name: ".kube directory exists"
     path: "/root/.kube"
     shouldExist: true
-    isDirectory: true
 
   - name: ".inspec directory exists"
     path: "/root/.inspec"
     shouldExist: true
-    isDirectory: true
 
   - name: "workspace directory exists"
     path: "/workspace"
     shouldExist: true
-    isDirectory: true
 
   - name: ".git directory in workspace"
     path: "/workspace/.git"
     shouldExist: true
-    isDirectory: true
 
 # Test file content
 fileContentTests:

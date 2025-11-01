@@ -8,6 +8,9 @@ FROM ruby:3.4-alpine AS base-linux-arm64
 # Final stage
 FROM base-linux-${TARGETARCH}
 
+# Set shell to ash with pipefail for better error handling
+SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
+
 # Build arguments - declare at top for availability throughout build
 ARG SSL_NO_VERIFY=false
 ARG KUBECTL_VERSION=1.31.4
@@ -22,16 +25,16 @@ LABEL maintainer="Aaron Lippold <lippold@gmail.com>" \
 # Handle SSL verification for corporate environments
 # Install ca-certificates first, then add corporate certs BEFORE any other downloads
 COPY certs/ /tmp/corp-certs/
+WORKDIR /tmp/corp-certs
 RUN if [ "$SSL_NO_VERIFY" = "true" ]; then \
         echo "WARNING: Using HTTP repos for Alpine packages (corporate SSL proxy/VPN)"; \
-        echo "http://dl-cdn.alpinelinux.org/alpine/v3.19/main" > /etc/apk/repositories && \
-        echo "http://dl-cdn.alpinelinux.org/alpine/v3.19/community" >> /etc/apk/repositories; \
+        echo "http://dl-cdn.alpinelinux.org/alpine/v3.22/main" > /etc/apk/repositories && \
+        echo "http://dl-cdn.alpinelinux.org/alpine/v3.22/community" >> /etc/apk/repositories; \
     fi && \
     apk add --no-cache ca-certificates openssl coreutils && \
     mkdir -p /usr/local/share/ca-certificates/corp && \
-    cd /tmp/corp-certs && \
     # Process all certificate files - split bundles into individual certs
-    for certfile in *.pem *.crt; do \
+    for certfile in ./*.pem ./*.crt; do \
         test -f "$certfile" || continue; \
         cert_count=$(grep -c "BEGIN CERTIFICATE" "$certfile" || echo "0"); \
         echo "Processing $certfile ($cert_count certificates)"; \
@@ -88,10 +91,11 @@ RUN if [ "$SSL_NO_VERIFY" = "true" ]; then \
         echo "WARNING: SSL verification disabled for gem installation (BUNDLE_SSL_VERIFY_MODE=0)"; \
     fi && \
     bundle install --system && \
-    gem install bigdecimal
+    gem install bigdecimal:3.1.8
 
 # Install plugins from git repositories AS ROOT
 COPY plugin-repos.txt /tmp/plugin-repos.txt
+WORKDIR /tmp
 RUN if [ "$SSL_NO_VERIFY" = "true" ]; then \
         echo "WARNING: SSL verification disabled for git clone"; \
         git config --global http.sslVerify false; \
@@ -103,18 +107,18 @@ RUN if [ "$SSL_NO_VERIFY" = "true" ]; then \
     # Process single plugin from build args
     if [ -n "$PLUGIN_GIT_REPO" ]; then \
         echo "Installing plugin: ${PLUGIN_GIT_REPO} (branch: ${PLUGIN_GIT_BRANCH})"; \
-        git clone --branch "${PLUGIN_GIT_BRANCH}" --depth 1 "${PLUGIN_GIT_REPO}" "/tmp/plugin-${plugin_count}" && \
-        cd "/tmp/plugin-${plugin_count}" && \
-        GEMSPEC=$(ls *.gemspec | head -1) && \
+        git clone --branch "${PLUGIN_GIT_BRANCH}" --depth 1 "${PLUGIN_GIT_REPO}" "/tmp/plugin-${plugin_count}"; \
+        cd "/tmp/plugin-${plugin_count}"; \
+        GEMSPEC=$(ls ./*.gemspec | head -1); \
         if [ -n "$GEMSPEC" ]; then \
-            gem build "$GEMSPEC" && \
-            cinc-auditor plugin install *.gem && \
+            gem build "$GEMSPEC"; \
+            cinc-auditor plugin install ./*.gem; \
             echo "  ✓ Plugin installed successfully"; \
             plugin_count=$((plugin_count + 1)); \
         else \
             echo "  ✗ WARNING: No gemspec found in repository"; \
         fi; \
-        cd / && \
+        cd /tmp; \
         rm -rf "/tmp/plugin-${plugin_count}"; \
     fi && \
     \
@@ -136,18 +140,18 @@ RUN if [ "$SSL_NO_VERIFY" = "true" ]; then \
             fi; \
             \
             echo "Installing plugin: ${repo} (branch: ${branch})"; \
-            git clone --branch "${branch}" --depth 1 "${repo}" "/tmp/plugin-${plugin_count}" && \
-            cd "/tmp/plugin-${plugin_count}" && \
-            GEMSPEC=$(ls *.gemspec | head -1) && \
+            git clone --branch "${branch}" --depth 1 "${repo}" "/tmp/plugin-${plugin_count}"; \
+            cd "/tmp/plugin-${plugin_count}"; \
+            GEMSPEC=$(ls ./*.gemspec | head -1); \
             if [ -n "$GEMSPEC" ]; then \
-                gem build "$GEMSPEC" && \
-                cinc-auditor plugin install *.gem && \
+                gem build "$GEMSPEC"; \
+                cinc-auditor plugin install ./*.gem; \
                 echo "  ✓ Plugin installed successfully"; \
                 plugin_count=$((plugin_count + 1)); \
             else \
                 echo "  ✗ WARNING: No gemspec found in repository"; \
             fi; \
-            cd / && \
+            cd /tmp; \
             rm -rf "/tmp/plugin-${plugin_count}"; \
         done < /tmp/plugin-repos.txt; \
     fi && \
@@ -157,16 +161,15 @@ RUN if [ "$SSL_NO_VERIFY" = "true" ]; then \
 
 # Install additional plugins from .gem files AS ROOT
 COPY plugins/ /tmp/plugins/
+WORKDIR /tmp/plugins
 RUN if [ -d "/tmp/plugins" ] && [ -n "$(ls -A /tmp/plugins/*.gem 2>/dev/null)" ]; then \
-        echo "Installing additional InSpec/Train plugins from .gem files..." && \
-        cd /tmp/plugins && \
-        for gemfile in *.gem; do \
+        echo "Installing additional InSpec/Train plugins from .gem files..."; \
+        for gemfile in ./*.gem; do \
             [ -f "$gemfile" ] || continue; \
             echo "Installing plugin: $gemfile"; \
-            cinc-auditor plugin install "$gemfile" && \
+            cinc-auditor plugin install "$gemfile"; \
             echo "  -> Installed successfully"; \
         done; \
-        cd / && \
         rm -rf /tmp/plugins; \
     else \
         echo "No additional plugin .gem files found in plugins/ directory"; \
