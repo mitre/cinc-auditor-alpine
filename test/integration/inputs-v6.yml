@@ -1,0 +1,11 @@
+# Input values for CINC Auditor v6 validation
+# Update these values when releasing new versions
+cinc_version: '6.8'
+kubectl_version: 'v1.31'
+ruby_version: '3.4'
+expected_plugins:
+  - 'train-k8s-container'
+  - 'train-aws'
+  - 'train-habitat'
+  - 'train-kubernetes'
+  - 'train-winrm'

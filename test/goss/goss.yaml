@@ -1,0 +1,82 @@
+# Goss configuration for testing CINC Auditor Alpine container
+# Run with: dgoss run cinc-auditor-alpine:6
+# Or: docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/goss.yaml:/goss.yaml aelsabbahy/goss dgoss run cinc-auditor-alpine:6
+
+command:
+  # Test CINC Auditor version
+  cinc-auditor version:
+    exit-status: 0
+    stdout:
+      - "/\\d+\\.\\d+\\.\\d+/"
+    timeout: 10000
+
+  # Test plugin installation
+  cinc-auditor plugin list:
+    exit-status: 0
+    stdout:
+      - "train-k8s-container"
+      - "2.0.0"
+    timeout: 10000
+
+  # Test kubectl
+  kubectl version --client:
+    exit-status: 0
+    stdout:
+      - "Client Version"
+      - "v1.31"
+    timeout: 5000
+
+  # Test Ruby version
+  ruby --version:
+    exit-status: 0
+    stdout:
+      - "ruby 3.4"
+    timeout: 5000
+
+file:
+  # CINC Auditor binary
+  /usr/local/bundle/bin/cinc-auditor:
+    exists: true
+    mode: "0755"
+    filetype: file
+
+  # kubectl binary
+  /usr/local/bin/kubectl:
+    exists: true
+    mode: "0755"
+    filetype: file
+
+  # Required directories
+  /root/.kube:
+    exists: true
+    filetype: directory
+
+  /root/.inspec:
+    exists: true
+    filetype: directory
+
+  /workspace:
+    exists: true
+    filetype: directory
+
+  /workspace/.git:
+    exists: true
+    filetype: directory
+
+  # InSpec plugins configuration
+  /root/.inspec/plugins.json:
+    exists: true
+    filetype: file
+    contents:
+      - "train-k8s-container"
+
+env:
+  # Required environment variables
+  TRAIN_K8S_SESSION_MODE:
+    value: "true"
+
+  KUBECONFIG:
+    value: "/root/.kube/config"
+
+  GIT_CEILING_DIRECTORIES:
+    value: "/"

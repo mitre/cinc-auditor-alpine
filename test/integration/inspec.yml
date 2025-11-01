@@ -1,0 +1,31 @@
+name: cinc-auditor-alpine-validation
+title: CINC Auditor Alpine Container Validation
+maintainer: Aaron Lippold
+copyright: MITRE Corporation
+copyright_email: lippold@gmail.com
+license: Apache-2.0
+summary: InSpec profile for validating CINC Auditor Alpine Docker images
+version: 1.0.0
+supports:
+  - platform-family: unix
+
+inputs:
+  - name: cinc_version
+    description: 'Expected CINC Auditor version (major.minor format, e.g., 6.8 or 7.0)'
+    type: String
+    required: true
+
+  - name: kubectl_version
+    description: 'Expected kubectl version (with v prefix, e.g., v1.31)'
+    type: String
+    required: true
+
+  - name: ruby_version
+    description: 'Expected Ruby version (major.minor format, e.g., 3.4)'
+    type: String
+    required: true
+
+  - name: expected_plugins
+    description: 'List of expected plugin names that should be installed'
+    type: Array
+    required: true

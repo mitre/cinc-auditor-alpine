@@ -1,0 +1,11 @@
+# Goss variables for CINC Auditor v7 validation
+# Update these values when releasing new versions
+cinc_version: "7.0"
+kubectl_version: "v1.31"
+ruby_version: "3.4"
+expected_plugins:
+  - "train-k8s-container"
+  - "train-aws"
+  - "train-habitat"
+  - "train-kubernetes"
+  - "train-winrm"
