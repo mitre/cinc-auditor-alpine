@@ -80,6 +80,39 @@ jobs:
           fi
           ./test/goss/test-with-goss.sh "${IMAGE_TAG}" "${VARS_FILE}"
 
+      - name: Run Trivy Vulnerability Scan
+        run: |
+          if [ "${{ matrix.version }}" = "v6" ]; then
+            IMAGE_TAG="cinc-auditor-alpine:6"
+          else
+            IMAGE_TAG="cinc-auditor-alpine:7"
+          fi
+          ./test/security/test-trivy.sh "${IMAGE_TAG}"
+
+      - name: Generate SBOM with Syft
+        run: |
+          if [ "${{ matrix.version }}" = "v6" ]; then
+            IMAGE_TAG="cinc-auditor-alpine:6"
+          else
+            IMAGE_TAG="cinc-auditor-alpine:7"
+          fi
+          ./test/security/test-syft.sh "${IMAGE_TAG}" spdx-json > sbom-${{ matrix.version }}.spdx.json
+
+      - name: Upload SBOM Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom-${{ matrix.version }}
+          path: sbom-${{ matrix.version }}.spdx.json
+
+      - name: Run Dockle Security Lint
+        run: |
+          if [ "${{ matrix.version }}" = "v6" ]; then
+            IMAGE_TAG="cinc-auditor-alpine:6"
+          else
+            IMAGE_TAG="cinc-auditor-alpine:7"
+          fi
+          ./test/security/test-dockle.sh "${IMAGE_TAG}"
+
   build-multiarch:
     name: Build Multi-Architecture
     runs-on: ubuntu-latest
