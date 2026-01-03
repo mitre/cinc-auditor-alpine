@@ -47,3 +47,6 @@ RECOVERY-PROMPT.txt
 # Temporary files
 tmp/
 temp/
+
+# Claude Code configuration
+.claude/
