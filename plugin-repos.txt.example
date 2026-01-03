@@ -4,7 +4,7 @@
 # Empty lines are ignored
 
 # Default train-k8s-container plugin from MITRE
-https://github.com/mitre/train-k8s-container.git v2.0
+https://github.com/mitre/train-k8s-container.git v2.2.0
 
 # Example: Add more plugins here
 # https://github.com/your-org/train-custom-plugin.git main

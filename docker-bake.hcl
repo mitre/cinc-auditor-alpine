@@ -19,7 +19,7 @@ variable "PLUGIN_GIT_REPO" {
 }
 
 variable "PLUGIN_GIT_BRANCH" {
-  default = "v2.0"
+  default = "v2.2.0"
 }
 
 # Detect local platform (macOS needs linux override)

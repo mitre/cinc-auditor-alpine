@@ -94,11 +94,7 @@ RUN if [ "$SSL_NO_VERIFY" = "true" ]; then \
     gem install bigdecimal:3.1.8
 
 # Install plugins from git repositories AS ROOT
-# Use example file if custom plugin-repos.txt not provided
-COPY plugin-repos.txt* /tmp/
-RUN if [ ! -f /tmp/plugin-repos.txt ] && [ -f /tmp/plugin-repos.txt.example ]; then \
-        cp /tmp/plugin-repos.txt.example /tmp/plugin-repos.txt; \
-    fi
+COPY plugin-repos.txt.example /tmp/plugin-repos.txt
 WORKDIR /tmp
 RUN if [ "$SSL_NO_VERIFY" = "true" ]; then \
         echo "WARNING: SSL verification disabled for git clone"; \
