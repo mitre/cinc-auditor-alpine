@@ -2,7 +2,7 @@
 
 A minimal, security-focused Docker image based on Alpine Linux with:
 - **CINC Auditor** - Open source InSpec distribution
-- **train-k8s-container v2.0** - Kubernetes container testing plugin
+- **train-k8s-container v2.2.0** - Kubernetes container testing plugin
 - **kubectl** - Kubernetes CLI tool
 - **Custom certificate support** - For corporate environments
 
@@ -10,7 +10,7 @@ A minimal, security-focused Docker image based on Alpine Linux with:
 
 - ✅ Alpine Linux 3.19 (minimal attack surface)
 - ✅ CINC Auditor (latest from rubygems.cinc.sh)
-- ✅ train-k8s-container v2.0 plugin (from MITRE)
+- ✅ train-k8s-container v2.2.0 plugin (from MITRE)
 - ✅ kubectl (configurable version, default 1.31.4)
 - ✅ Custom corporate certificate support (PEM, CRT, DER, CER formats)
 - ✅ Certificate bundle auto-splitting
@@ -27,7 +27,7 @@ A minimal, security-focused Docker image based on Alpine Linux with:
 # Dry run (see what would be built)
 ./scripts/build.sh --dry-run
 
-# Basic build (amd64, kubectl 1.31.4, train-k8s-container v2.0)
+# Basic build (amd64, kubectl 1.31.4, train-k8s-container v2.2.0)
 ./scripts/build.sh
 
 # Build for ARM64 (Apple Silicon, AWS Graviton, etc.)
@@ -164,7 +164,7 @@ Certificates will be automatically added to the system trust store.
 | `TRAIN_K8S_SESSION_MODE` | `true` | Enable persistent PTY sessions (runtime) |
 | `KUBECTL_VERSION` | `1.31.4` | kubectl version (build arg) |
 | `PLUGIN_GIT_REPO` | `mitre/train-k8s-container` | Plugin git repository (build arg) |
-| `PLUGIN_GIT_BRANCH` | `v2.0` | Plugin git branch (build arg) |
+| `PLUGIN_GIT_BRANCH` | `v2.2.0` | Plugin git branch (build arg) |
 | `SSL_NO_VERIFY` | `false` | Disable SSL verification (build arg) |
 
 ## Security Features
