@@ -15,7 +15,7 @@ command:
     exit-status: 0
     stdout:
       - "train-k8s-container"
-      - "2.0.0"
+      - "2.2.0"
     timeout: 10000
 
   # Test kubectl
