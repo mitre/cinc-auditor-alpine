@@ -6,6 +6,14 @@ variable "TAG_PREFIX" {
   default = "cinc-auditor-alpine"
 }
 
+variable "DOCKER_HUB_REPO" {
+  default = "mitre/cinc-auditor-alpine"
+}
+
+variable "VERSION" {
+  default = ""
+}
+
 variable "KUBECTL_VERSION" {
   default = "1.31.4"
 }
@@ -75,11 +83,14 @@ target "v6-multiarch" {
   args = {
     CINC_MAJOR_VERSION = "6"
   }
-  tags = [
-    "${TAG_PREFIX}:6",
-    "${TAG_PREFIX}:6.8",
-    "${TAG_PREFIX}:latest"
-  ]
+  tags = concat(
+    [
+      "${DOCKER_HUB_REPO}:6",
+      "${DOCKER_HUB_REPO}:6.8",
+      "${DOCKER_HUB_REPO}:latest"
+    ],
+    VERSION != "" ? ["${DOCKER_HUB_REPO}:${VERSION}"] : []
+  )
   platforms = ["linux/amd64", "linux/arm64"]
 }
 
@@ -104,9 +115,9 @@ target "v7-multiarch" {
     CINC_MAJOR_VERSION = "7"
   }
   tags = [
-    "${TAG_PREFIX}:7",
-    "${TAG_PREFIX}:7.0",
-    "${TAG_PREFIX}:7.0.52.beta"
+    "${DOCKER_HUB_REPO}:7",
+    "${DOCKER_HUB_REPO}:7.0",
+    "${DOCKER_HUB_REPO}:7.0.52.beta"
   ]
   platforms = ["linux/amd64", "linux/arm64"]
 }

@@ -43,16 +43,10 @@ jobs:
       - name: Build and push multi-arch images
         uses: docker/bake-action@v5
         env:
-          DOCKER_METADATA_OUTPUT_TAGS: ${{ steps.meta.outputs.tag }}
-          DOCKER_METADATA_OUTPUT_LABELS: |
-            org.opencontainers.image.created=${{ steps.meta.outputs.date }}
-            org.opencontainers.image.version=${{ steps.meta.outputs.tag }}
+          VERSION: ${{ steps.meta.outputs.tag }}
         with:
           targets: all
           push: true
-          set: |
-            *.cache-from=type=gha
-            *.cache-to=type=gha,mode=max
 
       - name: Update Docker Hub description
         uses: peter-evans/dockerhub-description@v4
