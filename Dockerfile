@@ -12,6 +12,7 @@ FROM base-linux-${TARGETARCH}
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 
 # Build arguments - declare at top for availability throughout build
+ARG TARGETARCH
 ARG SSL_NO_VERIFY=false
 ARG KUBECTL_VERSION=1.31.4
 ARG CINC_MAJOR_VERSION=6
