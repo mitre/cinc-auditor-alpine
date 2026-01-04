@@ -4,9 +4,51 @@ on:
   workflow_dispatch:
 
 jobs:
+  verify-tests:
+    name: Verify Required Tests Passed
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check required status checks
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const requiredChecks = ['lint', 'build-and-test (v6)', 'build-and-test (v7)'];
+
+            // Get check runs for this commit
+            const { data: checkRuns } = await github.rest.checks.listForRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: context.sha
+            });
+
+            console.log(`Checking ${requiredChecks.length} required checks for commit ${context.sha}`);
+
+            const failedChecks = [];
+            for (const checkName of requiredChecks) {
+              const check = checkRuns.check_runs.find(c => c.name === checkName);
+
+              if (!check) {
+                failedChecks.push(`${checkName}: NOT FOUND`);
+                console.log(`❌ ${checkName}: NOT FOUND`);
+              } else if (check.conclusion !== 'success') {
+                failedChecks.push(`${checkName}: ${check.conclusion || 'PENDING'}`);
+                console.log(`❌ ${checkName}: ${check.conclusion || 'PENDING'}`);
+              } else {
+                console.log(`✅ ${checkName}: ${check.conclusion}`);
+              }
+            }
+
+            if (failedChecks.length > 0) {
+              core.setFailed(`Cannot release - required checks failed:\n${failedChecks.join('\n')}`);
+            } else {
+              console.log('✅ All required checks passed');
+            }
+
   release:
     name: Build and Push to Docker Hub
     runs-on: ubuntu-latest
+    needs: verify-tests
 
     steps:
       - uses: actions/checkout@v4
