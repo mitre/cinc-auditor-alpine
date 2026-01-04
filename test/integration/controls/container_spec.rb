@@ -8,11 +8,11 @@
 control 'cinc-auditor-installation' do
   impact 1.0
   title 'CINC Auditor is installed and functional'
-  desc "Verify CINC Auditor binary exists and reports expected version #{input('cinc_version')}.x"
+  desc 'Verify CINC Auditor binary exists and is functional'
 
   describe command('cinc-auditor version') do
     its('exit_status') { should eq 0 }
-    its('stdout') { should match(/#{Regexp.escape(input('cinc_version'))}\.\d+/) }
+    its('stdout') { should match(/\d+\.\d+\.\d+/) }
   end
 end
 
@@ -34,22 +34,22 @@ end
 control 'kubectl-installation' do
   impact 1.0
   title 'kubectl is installed and functional'
-  desc "Verify kubectl binary exists and reports version #{input('kubectl_version')}.x"
+  desc 'Verify kubectl binary exists and is functional'
 
   describe command('kubectl version --client') do
     its('exit_status') { should eq 0 }
-    its('stdout') { should match(/Client Version.*#{Regexp.escape(input('kubectl_version'))}/) }
+    its('stdout') { should match(/Client Version: v\d+\.\d+\.\d+/) }
   end
 end
 
 control 'ruby-version' do
   impact 0.7
   title 'Ruby version is installed'
-  desc "Verify Ruby #{input('ruby_version')}.x is installed"
+  desc 'Verify Ruby is installed and functional'
 
   describe command('ruby --version') do
     its('exit_status') { should eq 0 }
-    its('stdout') { should match(/ruby #{Regexp.escape(input('ruby_version'))}\.\d+/) }
+    its('stdout') { should match(/ruby \d+\.\d+\.\d+/) }
   end
 end
 

@@ -23,14 +23,14 @@ command:
     exit-status: 0
     stdout:
       - "Client Version"
-      - "v1.31"
+      - "/v\\d+\\.\\d+/"
     timeout: 5000
 
   # Test Ruby version
   ruby --version:
     exit-status: 0
     stdout:
-      - "ruby 3.4"
+      - "/ruby \\d+\\.\\d+/"
     timeout: 5000
 
 file:

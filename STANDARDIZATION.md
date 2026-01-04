@@ -32,7 +32,7 @@
 **Core:**
 - `Dockerfile` - Single file for all variants
 - `Gemfile.v6` - CINC 6.8.x dependencies
-- `Gemfile.v7` - CINC 7.0.52.beta dependencies
+- `Gemfile.v7` - CINC 7 stable dependencies
 - `docker-bake.hcl` - Build configuration
 
 **Documentation:**
@@ -64,8 +64,8 @@ docker buildx bake all             # Build both (multi-arch)
 
 | Tag | CINC Version | Status | Ruby |
 |-----|--------------|--------|------|
-| `:6`, `:6.8`, `:latest` | 6.8.24 | Stable | 3.4.7 |
-| `:7`, `:7.0`, `:7.0.52.beta` | 7.0.52.beta | Beta | 3.4.7 |
+| `:6`, `:6.8`, `:6.8.24`, `:latest` | 6.8.24 | Stable | 3.4.x |
+| `:7`, `:7.0`, `:7.0.95` | 7.0.95 | Stable | 3.4.x |
 
 ## Image Sizes
 

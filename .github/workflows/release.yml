@@ -1,13 +1,7 @@
 name: Release to Docker Hub
 
 on:
-  release:
-    types: [published]
   workflow_dispatch:
-    inputs:
-      tag:
-        description: 'Tag to release (e.g., v1.0.0)'
-        required: true
 
 jobs:
   release:
@@ -29,21 +23,11 @@ jobs:
           driver: cloud
           endpoint: "mitre/mitre-builder"
 
-      - name: Extract metadata
-        id: meta
-        run: |
-          if [ "${{ github.event_name }}" = "release" ]; then
-            TAG="${{ github.event.release.tag_name }}"
-          else
-            TAG="${{ github.event.inputs.tag }}"
-          fi
-          echo "tag=${TAG}" >> $GITHUB_OUTPUT
-          echo "date=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
-
       - name: Build and push multi-arch images
         uses: docker/bake-action@v5
         env:
-          VERSION: ${{ steps.meta.outputs.tag }}
+          GIT_SHA: ${{ github.sha }}
+          BUILD_DATE: ${{ github.event.repository.updated_at }}
         with:
           targets: all
           push: true
