@@ -1,9 +1,9 @@
-# CINC Auditor v7 (Stable)
-# All components must be from rubygems.cinc.sh
+# CINC Auditor v7 (Prerelease)
+# All components must be from rubygems.cinc.sh with matching .beta versions
 
 source "https://rubygems.org"
 
-# All CINC v7 components from rubygems.cinc.sh
-gem "cinc-auditor-core-bin", "~> 7.0", source: "https://rubygems.cinc.sh"
-gem "cinc-auditor-bin", "~> 7.0", source: "https://rubygems.cinc.sh"
-gem "inspec", "~> 7.0", source: "https://rubygems.cinc.sh"
+# All CINC v7 components from rubygems.cinc.sh (all marked as .beta)
+gem "cinc-auditor-core-bin", "7.0.52.beta", source: "https://rubygems.cinc.sh"
+gem "cinc-auditor-bin", "7.0.52.beta", source: "https://rubygems.cinc.sh"
+gem "inspec", "7.0.52.beta", source: "https://rubygems.cinc.sh"
