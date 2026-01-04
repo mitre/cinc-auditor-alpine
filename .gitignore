@@ -43,6 +43,7 @@ test-results/
 session.md
 recovery-prompt.md
 RECOVERY-PROMPT.txt
+.beads/recovery-context.md
 
 # Temporary files
 tmp/
