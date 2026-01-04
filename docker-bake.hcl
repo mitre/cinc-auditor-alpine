@@ -11,7 +11,7 @@ variable "DOCKER_HUB_REPO" {
 }
 
 variable "KUBECTL_VERSION" {
-  default = "1.31.4"
+  default = "1.32.11"
 }
 
 variable "SSL_NO_VERIFY" {
@@ -31,6 +31,14 @@ variable "LOCAL_PLATFORM" {
   default = regex_replace("${BAKE_LOCAL_PLATFORM}", "^(darwin)", "linux")
 }
 
+variable "GIT_SHA" {
+  default = ""
+}
+
+variable "BUILD_DATE" {
+  default = ""
+}
+
 # Common configuration shared by all targets
 target "_common" {
   dockerfile = "Dockerfile"
@@ -45,7 +53,12 @@ target "_common" {
     "org.opencontainers.image.licenses" = "Apache-2.0"
     "org.opencontainers.image.description" = "CINC Auditor with train-k8s-container and kubectl on Alpine Linux"
     "org.opencontainers.image.authors" = "Aaron Lippold <lippold@gmail.com>"
-    "org.opencontainers.image.created" = "${timestamp()}"
+    "org.opencontainers.image.created" = "${BUILD_DATE != "" ? BUILD_DATE : timestamp()}"
+    "org.opencontainers.image.revision" = "${GIT_SHA}"
+    "org.opencontainers.image.url" = "https://hub.docker.com/r/mitre/cinc-auditor-alpine"
+    "org.opencontainers.image.documentation" = "https://github.com/mitre/cinc-auditor-alpine#readme"
+    "com.mitre.kubectl.version" = "${KUBECTL_VERSION}"
+    "com.mitre.train-k8s-container.version" = "${PLUGIN_GIT_BRANCH}"
   }
 }
 
