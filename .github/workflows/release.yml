@@ -31,11 +31,3 @@ jobs:
         with:
           targets: all
           push: true
-
-      - name: Update Docker Hub description
-        uses: peter-evans/dockerhub-description@v4
-        with:
-          username: ${{ vars.DOCKER_USER }}
-          password: ${{ secrets.DOCKER_PAT }}
-          repository: mitre/cinc-auditor-alpine
-          readme-filepath: ./README.md
