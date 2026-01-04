@@ -1,5 +1,10 @@
 # CINC Auditor Alpine Docker Image
 
+[![Docker Hub](https://img.shields.io/docker/pulls/mitre/cinc-auditor-alpine)](https://hub.docker.com/r/mitre/cinc-auditor-alpine)
+[![Docker Image Size](https://img.shields.io/docker/image-size/mitre/cinc-auditor-alpine/latest)](https://hub.docker.com/r/mitre/cinc-auditor-alpine)
+
+**Docker Hub**: https://hub.docker.com/r/mitre/cinc-auditor-alpine
+
 A minimal, security-focused Docker image based on Alpine Linux with:
 - **CINC Auditor** - Open source InSpec distribution
 - **train-k8s-container v2.2.0** - Kubernetes container testing plugin
