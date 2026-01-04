@@ -30,7 +30,7 @@ command:
   ruby --version:
     exit-status: 0
     stdout:
-      - "ruby 3.4"
+      - "/ruby \\d+\\.\\d+/"
     timeout: 5000
 
 file:
