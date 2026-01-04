@@ -105,6 +105,47 @@ docker run -it --rm \
 
 See `examples/k8s-scan.sh` for more examples.
 
+## Docker Tags
+
+Images are available on Docker Hub: `mitre/cinc-auditor-alpine`
+
+### Tagging Strategy
+
+Tags follow CINC Auditor upstream versions (no separate container versioning):
+
+**CINC Auditor v6 (Stable):**
+- `6.8.24` - Specific patch version
+- `6.8` - Latest v6.8.x patch
+- `6` - Latest v6.x release
+- `latest` - Always points to latest stable v6
+
+**CINC Auditor v7 (Stable):**
+- `7.0.95` - Specific patch version
+- `7.0` - Latest v7.0.x patch
+- `7` - Latest v7.x release
+
+**What's included in each tag:**
+- CINC Auditor version (matches tag)
+- train-k8s-container v2.2.0
+- kubectl 1.31.4
+- Multi-arch support (linux/amd64, linux/arm64)
+
+### Examples
+
+```bash
+# Use specific CINC version (recommended for production)
+docker pull mitre/cinc-auditor-alpine:6.8.24
+
+# Use latest v6 patch (gets updates automatically)
+docker pull mitre/cinc-auditor-alpine:6.8
+
+# Use latest stable (currently v6)
+docker pull mitre/cinc-auditor-alpine:latest
+
+# Use CINC v7
+docker pull mitre/cinc-auditor-alpine:7.0.95
+```
+
 ## Project Structure
 
 ```

@@ -10,10 +10,6 @@ variable "DOCKER_HUB_REPO" {
   default = "mitre/cinc-auditor-alpine"
 }
 
-variable "VERSION" {
-  default = ""
-}
-
 variable "KUBECTL_VERSION" {
   default = "1.31.4"
 }
@@ -72,6 +68,7 @@ target "v6" {
   tags = [
     "${TAG_PREFIX}:6",
     "${TAG_PREFIX}:6.8",
+    "${TAG_PREFIX}:6.8.24",
     "${TAG_PREFIX}:latest"
   ]
   platforms = ["${LOCAL_PLATFORM}"]
@@ -83,18 +80,16 @@ target "v6-multiarch" {
   args = {
     CINC_MAJOR_VERSION = "6"
   }
-  tags = concat(
-    [
-      "${DOCKER_HUB_REPO}:6",
-      "${DOCKER_HUB_REPO}:6.8",
-      "${DOCKER_HUB_REPO}:latest"
-    ],
-    VERSION != "" ? ["${DOCKER_HUB_REPO}:${VERSION}"] : []
-  )
+  tags = [
+    "${DOCKER_HUB_REPO}:6",
+    "${DOCKER_HUB_REPO}:6.8",
+    "${DOCKER_HUB_REPO}:6.8.24",
+    "${DOCKER_HUB_REPO}:latest"
+  ]
   platforms = ["linux/amd64", "linux/arm64"]
 }
 
-# CINC Auditor v7 (Beta) - Local platform only
+# CINC Auditor v7 (Stable) - Local platform only
 target "v7" {
   inherits = ["_common"]
   args = {
@@ -103,12 +98,12 @@ target "v7" {
   tags = [
     "${TAG_PREFIX}:7",
     "${TAG_PREFIX}:7.0",
-    "${TAG_PREFIX}:7.0.52.beta"
+    "${TAG_PREFIX}:7.0.95"
   ]
   platforms = ["${LOCAL_PLATFORM}"]
 }
 
-# CINC Auditor v7 (Beta) - Multi-architecture
+# CINC Auditor v7 (Stable) - Multi-architecture
 target "v7-multiarch" {
   inherits = ["_common"]
   args = {
@@ -117,7 +112,7 @@ target "v7-multiarch" {
   tags = [
     "${DOCKER_HUB_REPO}:7",
     "${DOCKER_HUB_REPO}:7.0",
-    "${DOCKER_HUB_REPO}:7.0.52.beta"
+    "${DOCKER_HUB_REPO}:7.0.95"
   ]
   platforms = ["linux/amd64", "linux/arm64"]
 }
