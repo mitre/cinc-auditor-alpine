@@ -12,7 +12,7 @@ docker buildx bake
 
 # Build specific version
 docker buildx bake v6     # CINC 6.8.24 stable
-docker buildx bake v7     # CINC 7.0.52.beta
+docker buildx bake v7     # CINC 7 stable
 ```
 
 ## Test

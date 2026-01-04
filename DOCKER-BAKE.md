@@ -25,9 +25,9 @@ docker buildx bake v7-multiarch
 | Target | Description | Platforms | Tags |
 |--------|-------------|-----------|------|
 | `v6` | CINC v6.8 stable (local arch) | Your platform | `:6`, `:6.8`, `:latest` |
-| `v7` | CINC v7.0.52.beta (local arch) | Your platform | `:7`, `:7.0`, `:7.0.52.beta` |
+| `v7` | CINC v7 stable (local arch) | Your platform | `:7`, `:7.0`, `:7.0.95` |
 | `v6-multiarch` | CINC v6.8 stable (multi-arch) | amd64, arm64 | `:6`, `:6.8`, `:latest` |
-| `v7-multiarch` | CINC v7.0.52.beta (multi-arch) | amd64, arm64 | `:7`, `:7.0`, `:7.0.52.beta` |
+| `v7-multiarch` | CINC v7 stable (multi-arch) | amd64, arm64 | `:7`, `:7.0`, `:7.0.95` |
 | `dev-vpn` | Dev build with SSL bypass | Your platform | `:dev-vpn` |
 
 ## Groups
