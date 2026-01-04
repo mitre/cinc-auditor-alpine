@@ -14,7 +14,7 @@ SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 # Build arguments - declare at top for availability throughout build
 ARG TARGETARCH
 ARG SSL_NO_VERIFY=false
-ARG KUBECTL_VERSION=1.31.4
+ARG KUBECTL_VERSION=1.32.11
 ARG CINC_MAJOR_VERSION=6
 ARG PLUGIN_GIT_REPO=https://github.com/mitre/train-k8s-container.git
 ARG PLUGIN_GIT_BRANCH=v2.0

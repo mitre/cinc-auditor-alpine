@@ -1,7 +1,7 @@
 # Goss variables for CINC Auditor v6 validation
 # Update these values when releasing new versions
 cinc_version: "6.8"
-kubectl_version: "v1.31"
+kubectl_version: "v1.32"
 ruby_version: "3.4"
 expected_plugins:
   - "train-k8s-container"
